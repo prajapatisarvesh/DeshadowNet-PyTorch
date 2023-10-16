@@ -1,2 +1,8 @@
-# intrinsic-imaging
-Testing out intrinsic imaging
+# DeShadowNet-PyTorch
+PyTorch Implementation of DeShadowNet for shadow removal.
+
+
+To-Do
+[] Update ReadMe
+[] Update Network
+[*] DataLoader
