@@ -28,12 +28,12 @@ class ISTDLoader(BaseDataLoader):
         shadow_free_image = cv2.imread(shadow_free)
         shadow_image = shadow_image.astype(dtype=np.float32) / 255
         shadow_free_image = shadow_free_image.astype(dtype=np.float32) / 255
-        shadow_image = cv2.resize(shadow_image, dsize=(224, 224))
-        shadow_free_image = cv2.resize(shadow_free_image, dsize=(224, 224))
-        shadow_mask_image = (shadow_image / shadow_free_image).clip(min=0, max=1) 
+        shadow_image = cv2.resize(shadow_image, dsize=(480, 480))
+        shadow_free_image = cv2.resize(shadow_free_image, dsize=(480, 480))
+        # shadow_mask_image = (shadow_image / shadow_free_image).clip(min=0, max=1) 
         # cv2.waitKey(0)
         sample = {'shadow_image':shadow_image, 
-                  'shadow_mask_image': shadow_mask_image,
+                  'shadow_mask_image': shadow_image,
                   'shadow_free_image': shadow_free_image,
                   }
         if self.transform:

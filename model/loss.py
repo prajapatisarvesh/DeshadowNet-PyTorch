@@ -3,30 +3,17 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-class AlphaLoss(object):
+class LogLoss(object):
     def __init__(self):
         super().__init__()
-
     
-    def __call__(self, output_mask, target_mask):
-        return F.mse_loss(output_mask, target_mask)
-
-
-class CompositionLoss(object):
-    def __init__(self):
-        super().__init__()
-        self.epsilon = 10e-5
-
-    
-    def __call__(self, output_shadow, target_shadow):
-        return torch.sqrt(F.mse_loss(output_shadow, target_shadow)**2 + self.epsilon**2)
-
-
-class CombinationLoss(object):
-    def __init__(self):
-        super().__init__()
-        self.alpha_loss = AlphaLoss()
-        self.composition_loss = CompositionLoss()
-    
-    def __call__(self, output, target_mask, shadow_free, shadow):
-        return 0.8 * self.alpha_loss(output, target_mask) + 0.2 * self.composition_loss(shadow_free * output, shadow)
+    def __call__(self, output, shadow, shadow_free):
+        ### Convert to Log image
+        output = (output * 255).to(dtype=torch.uint8)
+        shadow = (shadow * 255).to(dtype=torch.uint8)
+        shadow_free = (shadow_free * 255).to(dtype=torch.int)
+        shadow_mask_log = torch.log10(shadow+1) - torch.log10(shadow_free+1)
+        output_log = torch.log10(output+1)
+        shadow_mask_log = shadow_mask_log.to(dtype=torch.float64)
+        output_log = output_log.to(dtype=torch.float64)
+        return F.mse_loss(output_log, shadow_mask_log)

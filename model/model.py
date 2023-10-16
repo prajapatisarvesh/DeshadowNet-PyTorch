@@ -30,7 +30,7 @@ class GNet(BaseModel):
 
     def forward(self, x):
         x = self.vgg16_pretrained(x)
-        return x
+        return x.clip(min=0, max=1)
 
 
 class ANet(BaseModel):
@@ -51,7 +51,7 @@ class ANet(BaseModel):
         x = self.dropout(self.prelu(self.conv3(x)))
         x = self.dropout(self.prelu(self.conv4(x)))
         x = self.deconv1(x)
-        return x
+        return x.clip(min=0, max=1)
 
 
 class DeShadowNet(BaseModel):
@@ -86,4 +86,4 @@ class DeShadowNet(BaseModel):
         snet_out = self.snet(snet_input)
         merge = torch.concat([anet_out, snet_out], axis=1)
         x = self.final_conv(merge)
-        return x
+        return x.clip(min=0, max=1)
