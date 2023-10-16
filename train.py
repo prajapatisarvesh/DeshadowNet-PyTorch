@@ -1,4 +1,4 @@
-from model.rs_net import RSNet, RefinementNet
+from model.model import DeShadowNet
 from data_loader.data_loader import ISTDLoader
 from model.loss import CombinationLoss
 import torch
@@ -7,10 +7,11 @@ import os
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import cv2
+import sys
 
 if __name__ == '__main__':
     # Summary writer for Tensorboard
-    writer = SummaryWriter()
+    # writer = SummaryWriter()
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     ### Number of Epochs
     num_epochs = 2000
@@ -18,11 +19,13 @@ if __name__ == '__main__':
     batch_size = 4
     ### Learning Rate
     learning_rate = 0.001
-    model = RSNet()
-    train = ISTDLoader(csv_file='train.csv', root_dir=os.getcwd())
-    dataloader = DataLoader(train, batch_size=batch_size, shuffle=True)
+    model = DeShadowNet()
     print(model)
     model.to(device=device)
+    image = torch.rand(1,3,224,224).to(device=device)
+    out = model(image)
+    print(out.shape)
+    sys.exit()
     # model.load_state_dict(torch.load('checkpoints/model_weight_rgb.pth'))
     criterion = CombinationLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)

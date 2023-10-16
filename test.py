@@ -1,4 +1,4 @@
-from model.rs_net import RSNet, RefinementNet
+from model.model import DeShadowNet
 from data_loader.data_loader import ISTDLoader
 from model.loss import CombinationLoss
 import torch
