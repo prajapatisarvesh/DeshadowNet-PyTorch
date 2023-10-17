@@ -1,3 +1,13 @@
+'''
+LAST UPDATE: 2023.10.17
+Course: CS7180
+AUTHOR: Sarvesh Prajapati (SP), Abhinav Kumar (AK), Rupesh Pathak (RP)
+
+E-MAIL: prajapati.s@northeastern.edu, kumar.abhina@northeastern.edu, pathal.r@northeastern.edu
+DESCRIPTION: 
+Model for deshadownet
+
+'''
 import torch
 import torch.nn as nn
 from torch.nn import functional as F

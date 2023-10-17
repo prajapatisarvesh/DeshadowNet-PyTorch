@@ -1,3 +1,13 @@
+'''
+LAST UPDATE: 2023.10.17
+Course: CS7180
+AUTHOR: Sarvesh Prajapati (SP), Abhinav Kumar (AK), Rupesh Pathak (RP)
+
+E-MAIL: prajapati.s@northeastern.edu, kumar.abhina@northeastern.edu, pathal.r@northeastern.edu
+DESCRIPTION: 
+Testing script for DeShadowNet
+
+'''
 from model.model import DeShadowNet
 from data_loader.data_loader import ISTDLoader
 from model.loss import LogLoss
