@@ -37,7 +37,7 @@ class ANet(BaseModel):
     def __init__(self):
         super().__init__()
         self.prelu = nn.PReLU(num_parameters=64)
-        self.dropout = nn.Dropout(p=0.2, inplace=True)
+        self.dropout = nn.Dropout(p=0.6, inplace=True)
         self.conv1 = nn.Conv2d(in_channels=160, out_channels=64, kernel_size=(5,5), stride=(1,1), padding=(2,2))
         self.conv2 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(5,5), stride=(1,1), padding=(2,2))
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(5,5), stride=(1,1), padding=(2,2))
@@ -60,7 +60,7 @@ class DeShadowNet(BaseModel):
         self.gnet = GNet()
         self.snet = ANet()
         self.anet = ANet()
-        self.dropout = nn.Dropout(p=0.2)
+        self.dropout = nn.Dropout(p=0.6)
         self.deconv1 = nn.ConvTranspose2d(in_channels=512, out_channels=256, kernel_size=(8,8), stride=(4,4), padding=(2,2))
         self.deconv2 = nn.ConvTranspose2d(in_channels=512, out_channels=256, kernel_size=(8,8), stride=(4,4), padding=(2,2))
         self.conv21 = nn.Conv2d(in_channels=3, out_channels=96, kernel_size=(9,9), stride=(1,1), padding=(4,4))
@@ -86,4 +86,4 @@ class DeShadowNet(BaseModel):
         snet_out = self.snet(snet_input)
         merge = torch.concat([anet_out, snet_out], axis=1)
         x = self.final_conv(merge)
-        return x.clip(min=0, max=1)
+        return anet_out.clip(min=0, max=1)

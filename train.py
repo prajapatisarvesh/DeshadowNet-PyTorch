@@ -14,11 +14,11 @@ if __name__ == '__main__':
     writer = SummaryWriter()
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     ### Number of Epochs
-    num_epochs = 2000
+    num_epochs = 50000000
     ### Number of Batch Size    
     batch_size = 4
     ### Learning Rate
-    learning_rate = 0.001
+    learning_rate = 10e-5
     model = DeShadowNet()
     print(model)
     train = ISTDLoader('train.csv', root_dir=os.getcwd())
@@ -48,10 +48,11 @@ if __name__ == '__main__':
             loss.requires_grad = True
             loss.backward()
             optimizer.step()
-            if (i + 1) % 4==0:
+            if (i + 1) % 2==0:
                 print (f'Epoch [{epoch+1}/{num_epochs}], Step [{i+1}/{n_total_steps}], Loss: {loss.item():.4f}')
         ### For now we are saving every weight to see if there was overfitting.
-        torch.save(model.state_dict(), f'checkpoints/model_weight_{epoch}.pth')
+        if epoch % 10 == 0:
+            torch.save(model.state_dict(), f'checkpoints/model_weight_{epoch}.pth')
         epoch_loss /= n_total_steps
         writer.add_scalar("Loss", epoch_loss, epoch)
     print("[+] Training Finished!")
